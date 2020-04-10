@@ -2,10 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class Target : MonoBehaviour
 {
 
     public float health = 50f;
+
+    PlayerController playerController;
+
+    void Start()
+    {
+        playerController = FindObjectOfType<PlayerController>(); //need this for scorekeeping, might refactor damage taking here too
+    }
 
     public void TakeDamage(float amount)
     {
@@ -18,6 +27,7 @@ public class Target : MonoBehaviour
 
     void Die()
     {
+        playerController.ScoreUpdate(100);
         Destroy(gameObject);
     }
 }

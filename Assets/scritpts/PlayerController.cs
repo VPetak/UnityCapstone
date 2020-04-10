@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     //private Rigidbody rb;
     private int count = 0;
     //public float speed;
-    public Text scoreText;
+ 
 
 //    https://www.youtube.com/watch?v=_QajrabyTJc        
 
@@ -40,11 +40,14 @@ public class PlayerController : MonoBehaviour
     //These booleans are for opening doors with keycards, skipping 0 because doors with key0 always open by default
 
     public bool[] key = {true, false, false, false, false, false};
-   /* public bool key1 = false;
-    public bool key2 = false;
-    public bool key3 = false;
-    public bool key4 = false;
-    public bool key5 = false; */
+
+   public Text ammoText; 
+    public Text scoreText; //keep track of score and put it on canvas
+    public int score = 0;
+    public Text timeText;
+    private float time;
+    private float timeStartPoint;
+
 
 
     private void Awake()
@@ -56,12 +59,18 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         print("helo world");
-       // rb = GetComponent<Rigidbody>();
+        timeStartPoint = Time.time; //track when time starts to keep track of time relative to this point
     }
 
     // Update is called once per frame
     void Update() //was FixedUpdate originally
     {
+        //time stuff    source: /watch?v=x-C95TuQtf0
+        time = Time.time - timeStartPoint;
+        timeText.text = "time: " + ((int) time / 60).ToString() + ":" + (time % 60).ToString();
+
+
+
         if (!playerDead)
             {
 
@@ -147,6 +156,12 @@ public class PlayerController : MonoBehaviour
             gameOverUI.SetActive(true);
             playerDead = true;
         }
+    }
+
+    public void ScoreUpdate(int amount)
+    {
+        score += amount;
+        scoreText.text = "score: " + score;
     }
 
 }

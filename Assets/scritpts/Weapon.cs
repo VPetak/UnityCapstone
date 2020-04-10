@@ -40,9 +40,12 @@ public class Weapon : MonoBehaviour
 
     private Vector3 inFront = new Vector3(0, 0, 4);
 
+    PlayerController playerController;
+
     void Start()
     {
         audio = GetComponent<AudioSource>();
+        playerController = FindObjectOfType<PlayerController>();
         curClip = capacity;
     }
 
@@ -92,11 +95,12 @@ public class Weapon : MonoBehaviour
             if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
             {
                 Debug.Log(hit.transform.name);
-
+                
                 Target target = hit.transform.GetComponent<Target>();
                 if (target != null)
                 {
                     target.TakeDamage(damage);
+                    playerController.ScoreUpdate(10); // add to the score
                 }
 
                 GameObject impactEf = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(fpsCam.transform.forward));
