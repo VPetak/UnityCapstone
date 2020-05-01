@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class PlayerController : MonoBehaviour
 {
@@ -37,18 +38,23 @@ public class PlayerController : MonoBehaviour
     public GameObject gameOverUI;
     private bool playerDead = false;
 
+    private bool fileFlag = true; //true only if file hasnt been written to yet
+
     //These booleans are for opening doors with keycards, skipping 0 because doors with key0 always open by default
 
     public bool[] key = {true, false, false, false, false, false};
 
    public Text ammoText; 
     public Text scoreText; //keep track of score and put it on canvas
+
+    public Text gameOverText;
     public int score = 0;
     public Text timeText;
     private float time;
     private float timeStartPoint;
 
-
+    private string path = @"saves\\testIO.txt";  //https://docs.microsoft.com/en-us/dotnet/api/system.io.file?view=netcore-3.1
+    //set current file path to ./saves/(filename)
 
     private void Awake()
     {
@@ -58,6 +64,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         print("helo world");
         timeStartPoint = Time.time; //track when time starts to keep track of time relative to this point
     }
@@ -65,14 +72,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update() //was FixedUpdate originally
     {
-        //time stuff    source: /watch?v=x-C95TuQtf0
-        time = Time.time - timeStartPoint;
-        timeText.text = "time: " + ((int) time / 60).ToString() + ":" + (time % 60).ToString();
-
-
 
         if (!playerDead)
-            {
+        {
+
+            //time stuff    source: /watch?v=x-C95TuQtf0
+            time = Time.time - timeStartPoint;
+            timeText.text = "time: " + ((int) time / 60).ToString() + ":" + (time % 60).ToString();
 
             isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
@@ -94,18 +100,19 @@ public class PlayerController : MonoBehaviour
 
             Vector3 move = transform.right * x + transform.forward * z;
 
-        controller.Move(move * speed * Time.deltaTime);
+            controller.Move(move * speed * Time.deltaTime);
 
-        velocity.y += gravity * Time.deltaTime;
-        
+            velocity.y += gravity * Time.deltaTime;
+            
 
-        controller.Move(velocity * Time.deltaTime);
+            controller.Move(velocity * Time.deltaTime);
         }
         else
         {
             if (Input.GetButtonDown("Jump")) //Control for game over, press SPACE to retry
             {
                 scoreText.text = "TEST: NORMALLY THE GAME WILL RESTART WHEN THAT BEHAVIOUR IS ADDED";
+                
             }
         }
     }
@@ -153,8 +160,23 @@ public class PlayerController : MonoBehaviour
 
         if (HP <=0) //death sequence
         {
+            
             gameOverUI.SetActive(true);
             playerDead = true;
+
+            if (fileFlag)
+            {
+                fileFlag = false; //so we dont get a new entry for each bullet that hits the player
+                File.AppendAllText(path, "testuser" + (int)(time / 1.2) + " | Score: " + score + " | Time: " + time + " |  dead\n");
+                //File.AppendText("testuser" + (int)(time / 8) + " | Score: " + score + " | Time: " + time + " |  dead");
+              /*  using (StreamWriter sw = File.CreateText(path))
+                {
+                    sw.WriteLine("test!!!!");
+                    sw.WriteLine("Score: " + score);
+                    sw.WriteLine("Time: " + time);
+                } */
+                gameOverText.text = File.ReadAllText(path);
+            }
         }
     }
 
