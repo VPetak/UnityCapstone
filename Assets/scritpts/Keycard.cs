@@ -9,6 +9,7 @@ public class Keycard : MonoBehaviour
 
     public GameObject playerRef;
     public PlayerController playerContrRef;
+    public GameObject uiKeyCard;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,7 @@ public class Keycard : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerContrRef.key[keyID] = true;
+            uiKeyCard.gameObject.SetActive(true);
             Destroy(gameObject);
         }
     }

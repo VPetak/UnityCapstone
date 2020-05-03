@@ -173,7 +173,7 @@ public class PlayerController : MonoBehaviour
             { 
                 fileFlag = false; //so we dont get a new entry for each bullet that hits the player
                 //File.AppendAllText(path, "testuser" + (int)(time / 1.2) + " | Score: " + score + " | Time: " + time + " |  dead\n");
-                File.AppendAllText(path, userName1 + " | Score: " + score + " | Time: " + time + " |  dead\n");
+                File.AppendAllText(path, userName1 + " | \tScore: " + score + " | \tTime: " + time + " |  \tdead\n");
                 //File.AppendText("testuser" + (int)(time / 8) + " | Score: " + score + " | Time: " + time + " |  dead");
               /*  using (StreamWriter sw = File.CreateText(path))
                 {
