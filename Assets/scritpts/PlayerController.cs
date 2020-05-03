@@ -52,6 +52,9 @@ public class PlayerController : MonoBehaviour
     public Text timeText;
     private float time;
     private float timeStartPoint;
+    public string userName1;
+    public GameObject GManager1;
+    private GameManager GManager2;
 
     private string path = @"saves\\testIO.txt";  //https://docs.microsoft.com/en-us/dotnet/api/system.io.file?view=netcore-3.1
     //set current file path to ./saves/(filename)
@@ -64,9 +67,11 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        GManager2 = GManager1.GetComponent<GameManager>();
+        //GManager = GetComponent<GameManager>();
         print("helo world");
         timeStartPoint = Time.time; //track when time starts to keep track of time relative to this point
+        userName1 = GManager2.GetUserName();
     }
 
     // Update is called once per frame
@@ -165,9 +170,10 @@ public class PlayerController : MonoBehaviour
             playerDead = true;
 
             if (fileFlag)
-            {
+            { 
                 fileFlag = false; //so we dont get a new entry for each bullet that hits the player
-                File.AppendAllText(path, "testuser" + (int)(time / 1.2) + " | Score: " + score + " | Time: " + time + " |  dead\n");
+                //File.AppendAllText(path, "testuser" + (int)(time / 1.2) + " | Score: " + score + " | Time: " + time + " |  dead\n");
+                File.AppendAllText(path, userName1 + " | Score: " + score + " | Time: " + time + " |  dead\n");
                 //File.AppendText("testuser" + (int)(time / 8) + " | Score: " + score + " | Time: " + time + " |  dead");
               /*  using (StreamWriter sw = File.CreateText(path))
                 {

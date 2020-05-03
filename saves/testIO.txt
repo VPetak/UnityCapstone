@@ -2,3 +2,14 @@ testuser3 | Score: 120 | Time: 4.73752 |  dead
 testuser4 | Score: 0 | Time: 5.891869 |  dead
 testuser44 | Score: 230 | Time: 53.35759 |  dead
 testuser4 | Score: 110 | Time: 5.376536 |  dead
+testuser8 | Score: 0 | Time: 10.05668 |  dead
+testuser3 | Score: 0 | Time: 4.066961 |  dead
+testuser4 | Score: 0 | Time: 5.005304 |  dead
+testuser4 | Score: 0 | Time: 5.976858 |  dead
+ | Score: 0 | Time: 3.955451 |  dead
+ | Score: 0 | Time: 19.43864 |  dead
+KGARBAGEASSSHIT | Score: 0 | Time: 4.886496 |  dead
+OK FINALLY!!!! | Score: 310 | Time: 52.62918 |  dead
+Guest | Score: 470 | Time: 35.05972 |  dead
+Guest | Score: 20 | Time: 30.73708 |  dead
+Guest | Score: 120 | Time: 5.417448 |  dead
