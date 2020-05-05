@@ -12,6 +12,14 @@ public class GameManager : MonoBehaviour
     public Text inputText;
     public static string userName = "Guest";
 
+    void Start()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            Cursor.lockState = CursorLockMode.None; //without this, there will be no cursor when returning to the start menu
+        }
+    }
+
     public void GameOver()
     {
         SceneManager.LoadScene(0);
@@ -35,6 +43,12 @@ public class GameManager : MonoBehaviour
     public string GetUserName()
     {
         return userName;
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+        print("quit");
     }
 
 }

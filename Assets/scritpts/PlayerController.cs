@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -36,6 +37,12 @@ public class PlayerController : MonoBehaviour
     public int armor = 100; //make private later
 
     public GameObject gameOverUI;
+
+     public Text gameOverText;
+
+    public GameObject gameWonUI;
+
+    public Text gameWonText;
     private bool playerDead = false;
 
     private bool fileFlag = true; //true only if file hasnt been written to yet
@@ -44,10 +51,11 @@ public class PlayerController : MonoBehaviour
 
     public bool[] key = {true, false, false, false, false, false};
 
-   public Text ammoText; 
+    public Text ammoText; 
+    public Text HPText; 
+    public Text armorText;
     public Text scoreText; //keep track of score and put it on canvas
 
-    public Text gameOverText;
     public int score = 0;
     public Text timeText;
     private float time;
@@ -72,6 +80,8 @@ public class PlayerController : MonoBehaviour
         print("helo world");
         timeStartPoint = Time.time; //track when time starts to keep track of time relative to this point
         userName1 = GManager2.GetUserName();
+        HPText.text = HP + "% HP";
+        armorText.text = armor + "% Armor";
     }
 
     // Update is called once per frame
@@ -94,14 +104,11 @@ public class PlayerController : MonoBehaviour
 
             float x  = Input.GetAxis("Horizontal");
             float z  = Input.GetAxis("Vertical");
-        // float jmp = Input.GetAxis("Jump");
 
             if(Input.GetButtonDown("Jump") && isGrounded)
             {
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             }
-
-        // jmp = jmp * (float)0.4;
 
             Vector3 move = transform.right * x + transform.forward * z;
 
@@ -116,8 +123,11 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetButtonDown("Jump")) //Control for game over, press SPACE to retry
             {
-                scoreText.text = "TEST: NORMALLY THE GAME WILL RESTART WHEN THAT BEHAVIOUR IS ADDED";
-                
+                //if (HP <= 0)
+                    Cursor.visible = true;
+                    SceneManager.LoadScene(0);
+                //else
+                //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
         }
     }
@@ -135,15 +145,22 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("health"))
         {
             other.gameObject.SetActive(false);
-            HP += 30;
-            if (HP > maxHP)
-                HP = maxHP;
+            Heal(30);
         }
 
         if (other.gameObject.CompareTag("armor"))
         {
             other.gameObject.SetActive(false);
-            armor = 100;
+            ArmorUp(100);
+        }
+
+        if (other.gameObject.CompareTag("Finish"))
+        {
+            other.gameObject.SetActive(false);
+            HP = 90000;
+            HPText.text = "100% HP";
+            playerDead = true;
+            Win();
         }
 
      /*   if (other.gameObject.CompareTag("door"))
@@ -157,11 +174,19 @@ public class PlayerController : MonoBehaviour
     {
         if (armor > 0) //armor lowers damage taken but also takes damage itself
         {
-            damage = damage / 3;
             armor -= damage;
+            damage = damage / 5;
+            
         }
+        else
+            armor = 0;
 
         HP -= damage;
+        if (!playerDead)
+        {
+            HPText.text = HP + "% HP";
+            armorText.text = armor + "% Armor";
+        }
 
         if (HP <=0) //death sequence
         {
@@ -172,24 +197,41 @@ public class PlayerController : MonoBehaviour
             if (fileFlag)
             { 
                 fileFlag = false; //so we dont get a new entry for each bullet that hits the player
-                //File.AppendAllText(path, "testuser" + (int)(time / 1.2) + " | Score: " + score + " | Time: " + time + " |  dead\n");
                 File.AppendAllText(path, userName1 + " | \tScore: " + score + " | \tTime: " + time + " |  \tdead\n");
-                //File.AppendText("testuser" + (int)(time / 8) + " | Score: " + score + " | Time: " + time + " |  dead");
-              /*  using (StreamWriter sw = File.CreateText(path))
-                {
-                    sw.WriteLine("test!!!!");
-                    sw.WriteLine("Score: " + score);
-                    sw.WriteLine("Time: " + time);
-                } */
                 gameOverText.text = File.ReadAllText(path);
             }
         }
+    }
+
+    public void Heal(int amount)
+    {
+        HP += amount;
+        if (HP > maxHP)
+            HP = maxHP;
+        HPText.text = HP + "% HP";
+    }
+
+    public void ArmorUp(int amount)
+    {
+        armor += amount;
+        if (armor > 150)
+            armor = 150;
+        armorText.text = armor + "% Armor";
     }
 
     public void ScoreUpdate(int amount)
     {
         score += amount;
         scoreText.text = "score: " + score;
+    }
+
+    public void Win()
+    {
+        gameWonUI.SetActive(true);
+   
+        File.AppendAllText(path, userName1 + " | \tScore: " + score + " | \tTime: " + time + " |  \tWON!\n");
+        gameWonText.text = File.ReadAllText(path);
+        
     }
 
 }
