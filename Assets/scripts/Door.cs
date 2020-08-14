@@ -18,12 +18,6 @@ public class Door : MonoBehaviour
         playerContrRef = playerRef.GetComponent<PlayerController>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy"))
@@ -31,14 +25,6 @@ public class Door : MonoBehaviour
             //include an if statement for if the player has the key
             if (playerContrRef.key[keyID] == true)
                 OpenDoor();
-          /* switch (keyID)
-            {
-                case 0:
-                //case 1 when /*boolean for if player has key1 
-                case 1 when playerContrRef.key1 == true:
-                    OpenDoor();
-                    break; 
-            } */
         }
     }
 

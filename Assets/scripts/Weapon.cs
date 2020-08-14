@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class Weapon : MonoBehaviour
 {
-
-    // public int weaponSelected = 0;
     public float damage = 10f;
     public float range = 100f;
     public float rof = 15f;
@@ -31,7 +29,6 @@ public class Weapon : MonoBehaviour
     public bool hitscan = true;
     public Text ammoText;
     private int temp = 0; //this will be used for reloading math
-    //private Random random = new Random();
 
 
 
@@ -116,12 +113,8 @@ public class Weapon : MonoBehaviour
 
         else //for non-hitscan things, such as fireballs or rockets
         {
-               // Target target = hit.transform.GetComponent<Target>();
                 GameObject bulletProj = Instantiate(projectile, this.transform.position + inFront, Quaternion.LookRotation(fpsCam.transform.forward));
-                //print("gun: " + hit.point);
                 Destroy(bulletProj, 7f);
-                //audio.PlayOneShot(fireSound, 0.5f);
-                //burst--;
         }
     }
 }

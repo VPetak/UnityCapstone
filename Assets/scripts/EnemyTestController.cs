@@ -31,22 +31,16 @@ public class EnemyTestController : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, PlayerController.instance.transform.position) < proximityTrig)
         {
-            //Vector3 playerDir = PlayerController.instance.transform.position - transform.position;
-            //rb2d.velocity = playerDir.normalized * speed;+
             navMeshAgent.SetDestination(PlayerController.instance.transform.position);
             ShootPlayer(PlayerController.instance.transform.position);
-            //ShootPlayer(playerDir);
         }
     }
 
     void ShootPlayer(Vector3 dir)
     {
-        //GameObject bulletProj = Instantiate(projectile, hit.point, Quaternion.LookRotation(hit.normal));
-
         if (Time.time >= nextFire) //GetButtonDown for semi, GetButton to hold it (full auto)
         {
             nextFire = Time.time + 1f / rof;  //set the next time that the weapon can fire, 
-
             if (burst <= 0)
             {
                 nextFire += 1.5f;
@@ -54,7 +48,6 @@ public class EnemyTestController : MonoBehaviour
             }
             GameObject bulletProj = Instantiate(projectile, this.transform.position, Quaternion.LookRotation(this.transform.position));
             Destroy(bulletProj, 4f);
-            //audio.PlayOneShot(fireSound, 0.5f);
             burst--;
         }
     }

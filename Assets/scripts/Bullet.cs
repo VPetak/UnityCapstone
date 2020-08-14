@@ -11,7 +11,6 @@ public class Bullet : MonoBehaviour
     private Vector3 direction;
     public bool enemyFire = true;
     public GameObject fpsCam;
-    //GameObject bulletProj = Instantiate(projectile, this.transform.position, Quaternion.LookRotation(this.transform.position));
 
     // Start is called before the first frame update
     void Start()
@@ -23,23 +22,18 @@ public class Bullet : MonoBehaviour
         }
         else
         {
-            //direction = fpsCam.transform.forward - transform.position;
             RaycastHit pHit;
             Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out pHit, 100);
             direction = pHit.point - transform.position;
-            //print("bullet: " + pHit.point);
         }
         
         direction.Normalize();
-        //direction = direction * bulletSpeed;
-        //print(direction);
     }
 
     // Update is called once per frame
     void Update()
     {
         rb.velocity = direction * bulletSpeed;
-        //print(rb.velocity);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -47,18 +41,6 @@ public class Bullet : MonoBehaviour
         if (other.tag == "Player" && enemyFire)
         {
             PlayerController.instance.TakeDamage(bulletDam);
-            //Destroy(gameObject);
         }
-       // Destroy(bulletProj);
-    }
-
-    private void OnCollision(Collision other)
-    {
-       /// Destroy(this.gameObject);
-      //  if (other.tag == "Player")
-      //  {
-      //      PlayerController.instance.TakeDamage(bulletDam);
-            //Destroy(gameObject);
-      //  }
     }
 }

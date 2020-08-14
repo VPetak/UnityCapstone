@@ -18,12 +18,8 @@ public class PlayerController : MonoBehaviour
 
     //public variables can be seen and set from the editor
     //private variables cannot but can be set from the game
-    //private Rigidbody rb;
-    private int count = 0;
-    //public float speed;
- 
 
-//    https://www.youtube.com/watch?v=_QajrabyTJc        
+    private int count = 0;     
 
     Vector3 velocity;
 
@@ -48,7 +44,6 @@ public class PlayerController : MonoBehaviour
     private bool fileFlag = true; //true only if file hasnt been written to yet
 
     //These booleans are for opening doors with keycards, skipping 0 because doors with key0 always open by default
-
     public bool[] key = {true, false, false, false, false, false};
 
     public Text ammoText; 
@@ -76,7 +71,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         GManager2 = GManager1.GetComponent<GameManager>();
-        //GManager = GetComponent<GameManager>();
         print("helo world");
         timeStartPoint = Time.time; //track when time starts to keep track of time relative to this point
         userName1 = GManager2.GetUserName();
@@ -87,11 +81,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update() //was FixedUpdate originally
     {
-
         if (!playerDead)
         {
-
-            //time stuff    source: /watch?v=x-C95TuQtf0
+            //time and physics, see this youtube tutorial    source: /watch?v=x-C95TuQtf0
             time = Time.time - timeStartPoint;
             timeText.text = "time: " + ((int) time / 60).ToString() + ":" + (time % 60).ToString();
 
@@ -109,14 +101,9 @@ public class PlayerController : MonoBehaviour
             {
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             }
-
             Vector3 move = transform.right * x + transform.forward * z;
-
             controller.Move(move * speed * Time.deltaTime);
-
             velocity.y += gravity * Time.deltaTime;
-            
-
             controller.Move(velocity * Time.deltaTime);
         }
         else
@@ -162,12 +149,6 @@ public class PlayerController : MonoBehaviour
             playerDead = true;
             Win();
         }
-
-     /*   if (other.gameObject.CompareTag("door"))
-        {
-            other.gameObject.SetActive(false);
-            armor = 100;
-        }*/
     }
 
     public void TakeDamage(int damage)
